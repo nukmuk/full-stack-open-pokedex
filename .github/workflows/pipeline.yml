@@ -38,10 +38,10 @@ jobs:
           
       - name: Build Success
         uses: rjstone/discord-webhook-notify@v1
-        if: success()
+        if: ${{ success() && github.event_name == 'push' && !contains(join(github.event.commits.*.message, ''), '#skip') }}
         with:
           severity: info
-          details: Build Succeeded!
+          details: Build Succeeded and deployed!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Build Failure
         uses: rjstone/discord-webhook-notify@v1
